@@ -1,0 +1,136 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "Character",
+"language": "GDScript",
+"path": "res://Character/Character.gd"
+}, {
+"base": "Resource",
+"class": "CharacterStats",
+"language": "GDScript",
+"path": "res://Character/CharacterStats.gd"
+}, {
+"base": "Effect",
+"class": "DamageEffect",
+"language": "GDScript",
+"path": "res://Character/Skill/Effect/DamageEffect.gd"
+}, {
+"base": "Reference",
+"class": "Effect",
+"language": "GDScript",
+"path": "res://Character/Skill/Effect/Effect.gd"
+}, {
+"base": "Node",
+"class": "Equipment",
+"language": "GDScript",
+"path": "res://Character/Equipment/Equipment.gd"
+}, {
+"base": "Node2D",
+"class": "HealthBar",
+"language": "GDScript",
+"path": "res://Character/HealthBar/HealthBar.gd"
+}, {
+"base": "Node",
+"class": "Level",
+"language": "GDScript",
+"path": "res://Level/Level.gd"
+}, {
+"base": "Control",
+"class": "LevelInterface",
+"language": "GDScript",
+"path": "res://Level/Interface/LevelInterface.gd"
+}, {
+"base": "Node2D",
+"class": "LevelTile",
+"language": "GDScript",
+"path": "res://Level/LevelTile.gd"
+}, {
+"base": "Effect",
+"class": "MoveEffect",
+"language": "GDScript",
+"path": "res://Character/Skill/Effect/MoveEffect.gd"
+}, {
+"base": "Skill",
+"class": "MoveSkill",
+"language": "GDScript",
+"path": "res://Character/Skill/MoveSkill.gd"
+}, {
+"base": "Character",
+"class": "PlayerCharacter",
+"language": "GDScript",
+"path": "res://Character/PlayerCharacter.gd"
+}, {
+"base": "Node",
+"class": "Skill",
+"language": "GDScript",
+"path": "res://Character/Skill/Skill.gd"
+}, {
+"base": "ColorRect",
+"class": "SkillButton",
+"language": "GDScript",
+"path": "res://Level/Interface/SkillButton.gd"
+}, {
+"base": "Skill",
+"class": "SlaySkill",
+"language": "GDScript",
+"path": "res://Character/Skill/SlaySkill.gd"
+} ]
+_global_script_class_icons={
+"Character": "",
+"CharacterStats": "",
+"DamageEffect": "",
+"Effect": "",
+"Equipment": "",
+"HealthBar": "",
+"Level": "",
+"LevelInterface": "",
+"LevelTile": "",
+"MoveEffect": "",
+"MoveSkill": "",
+"PlayerCharacter": "",
+"Skill": "",
+"SkillButton": "",
+"SlaySkill": ""
+}
+
+[application]
+
+config/name="Game"
+
+[debug]
+
+gdscript/warnings/return_value_discarded=false
+
+[display]
+
+window/size/width=496
+window/size/height=414
+window/size/always_on_top=true
+
+[input]
+
+tile_accept={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+skill_cancel={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":2,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+
+[rendering]
+
+quality/driver/driver_name="GLES2"
+vram_compression/import_etc=true
+vram_compression/import_etc2=false
