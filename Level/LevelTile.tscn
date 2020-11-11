@@ -1,13 +1,23 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Sprites/LevelTile/LevelTile.png" type="Texture" id=1]
 [ext_resource path="res://Level/LevelTile.gd" type="Script" id=2]
-[ext_resource path="res://Sprites/LevelTile/LevelTileMarkGround.png" type="Texture" id=3]
-[ext_resource path="res://Sprites/LevelTile/LevelTileMarkBorderSouthEast.png" type="Texture" id=4]
-[ext_resource path="res://Sprites/LevelTile/LevelTileMarkBorderNorthEast.png" type="Texture" id=5]
-[ext_resource path="res://Sprites/LevelTile/LevelTileMarkBorderNorthWest.png" type="Texture" id=6]
-[ext_resource path="res://Sprites/LevelTile/LevelTileMarkBorderSouthWest.png" type="Texture" id=7]
+[ext_resource path="res://Sprites/LevelTile/LevelTileMarkBorderNorth.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/LevelTile/LevelTileMarkBorderEast.png" type="Texture" id=4]
+[ext_resource path="res://Sprites/LevelTile/LevelTileMarkGround.png" type="Texture" id=5]
+[ext_resource path="res://Sprites/LevelTile/LevelTileMarkBorderSouth.png" type="Texture" id=6]
+[ext_resource path="res://Sprites/LevelTile/LevelTileMarkBorderWest.png" type="Texture" id=7]
 [ext_resource path="res://Fonts/GameFont/GameFont.tres" type="DynamicFont" id=8]
+[ext_resource path="res://Sprites/LevelTile/LevelTilePathToNorth.png" type="Texture" id=9]
+[ext_resource path="res://Sprites/LevelTile/LevelTilePathToEast.png" type="Texture" id=10]
+[ext_resource path="res://Sprites/LevelTile/LevelTilePathToSouth.png" type="Texture" id=11]
+[ext_resource path="res://Sprites/LevelTile/LevelTilePathToWest.png" type="Texture" id=12]
+[ext_resource path="res://Sprites/LevelTile/LevelTilePathNorthToEast.png" type="Texture" id=13]
+[ext_resource path="res://Sprites/LevelTile/LevelTilePathEastToSouth.png" type="Texture" id=14]
+[ext_resource path="res://Sprites/LevelTile/LevelTilePathSouthToWest.png" type="Texture" id=15]
+[ext_resource path="res://Sprites/LevelTile/LevelTilePathWestToNorth.png" type="Texture" id=16]
+[ext_resource path="res://Sprites/LevelTile/LevelTilePathNorthToSouth.png" type="Texture" id=17]
+[ext_resource path="res://Sprites/LevelTile/LevelTilePathEastToWest.png" type="Texture" id=18]
 
 [node name="LevelTile" type="Node2D"]
 script = ExtResource( 2 )
@@ -41,23 +51,76 @@ __meta__ = {
 visible = false
 
 [node name="Ground" type="Sprite" parent="Mark"]
-texture = ExtResource( 3 )
-centered = false
-
-[node name="BorderNorthWest" type="Sprite" parent="Mark"]
-texture = ExtResource( 6 )
-centered = false
-
-[node name="BorderNorthEast" type="Sprite" parent="Mark"]
+modulate = Color( 1, 1, 1, 0.501961 )
 texture = ExtResource( 5 )
 centered = false
 
-[node name="BorderSouthEast" type="Sprite" parent="Mark"]
+[node name="BorderNorth" type="Sprite" parent="Mark"]
+texture = ExtResource( 3 )
+centered = false
+
+[node name="BorderEast" type="Sprite" parent="Mark"]
 texture = ExtResource( 4 )
 centered = false
 
-[node name="BorderSouthWest" type="Sprite" parent="Mark"]
+[node name="BorderSouth" type="Sprite" parent="Mark"]
+texture = ExtResource( 6 )
+centered = false
+
+[node name="BorderWest" type="Sprite" parent="Mark"]
 texture = ExtResource( 7 )
+centered = false
+
+[node name="Path" type="Node2D" parent="."]
+
+[node name="ToNorth" type="Sprite" parent="Path"]
+visible = false
+texture = ExtResource( 9 )
+centered = false
+
+[node name="ToEast" type="Sprite" parent="Path"]
+visible = false
+texture = ExtResource( 10 )
+centered = false
+
+[node name="ToSouth" type="Sprite" parent="Path"]
+visible = false
+texture = ExtResource( 11 )
+centered = false
+
+[node name="ToWest" type="Sprite" parent="Path"]
+visible = false
+texture = ExtResource( 12 )
+centered = false
+
+[node name="NorthToEast" type="Sprite" parent="Path"]
+visible = false
+texture = ExtResource( 13 )
+centered = false
+
+[node name="EastToSouth" type="Sprite" parent="Path"]
+visible = false
+texture = ExtResource( 14 )
+centered = false
+
+[node name="SouthToWest" type="Sprite" parent="Path"]
+visible = false
+texture = ExtResource( 15 )
+centered = false
+
+[node name="WestToNorth" type="Sprite" parent="Path"]
+visible = false
+texture = ExtResource( 16 )
+centered = false
+
+[node name="NorthToSouth" type="Sprite" parent="Path"]
+visible = false
+texture = ExtResource( 17 )
+centered = false
+
+[node name="EastToWest" type="Sprite" parent="Path"]
+visible = false
+texture = ExtResource( 18 )
 centered = false
 
 [node name="Area" type="Area2D" parent="."]

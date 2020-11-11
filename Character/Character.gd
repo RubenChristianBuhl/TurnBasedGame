@@ -9,6 +9,7 @@ signal turn_ended
 export var stats: Resource
 
 
+onready var tween = $Tween
 onready var health_bar = $HealthBar
 onready var health = stats.max_health setget _set_health, _get_health
 
@@ -46,14 +47,6 @@ func _get_skills() -> Array:
 	return character_skills
 
 
-func select_skill(_skill: Skill):
-	pass
-
-
-func select_target(_target: LevelTile, _is_accepted: bool):
-	pass
-
-
 func _on_skill_caused(skill: Skill):
 	if skill == _move_skill:
 		_use_skill()
@@ -69,11 +62,9 @@ func _move():
 	var move_targets = _move_skill.get_effective_targets(level, level.player_characters, self)
 	randomize()
 	move_targets.shuffle()
-	if not move_targets.empty() and move_targets.front() != tile:
-		_move_skill.set_target_effects(level, move_targets.front(), self)
-		_move_skill.cause()
-	else:
-		_use_skill()
+	var move_target = tile if move_targets.empty() else move_targets.front()
+	_move_skill.set_target_effects(level, move_target, self)
+	_move_skill.cause()
 
 
 func _use_skill():

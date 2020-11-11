@@ -2,12 +2,11 @@
 
 [ext_resource path="res://Level/Interface/LevelInterface.gd" type="Script" id=3]
 
-
-
 [node name="LevelInterface" type="Control"]
 anchor_top = 1.0
 anchor_bottom = 1.0
 grow_vertical = 0
+mouse_filter = 2
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -17,6 +16,7 @@ __meta__ = {
 margin_left = 8.0
 margin_bottom = -8.0
 grow_vertical = 0
+mouse_filter = 2
 custom_constants/separation = 4
 __meta__ = {
 "_edit_use_anchors_": false

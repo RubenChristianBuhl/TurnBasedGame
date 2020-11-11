@@ -25,7 +25,7 @@ func select_target(target: LevelTile, is_accepted: bool):
 			_selected_skill.set_target_effects(level, target, self)
 			if is_accepted:
 				level.unmark_tiles()
-				_selected_skill.cause()
+				_selected_skill.cause(_selected_skill != _move_skill)
 			else:
 				_selected_skill.preview()
 

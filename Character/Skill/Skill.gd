@@ -8,6 +8,7 @@ signal caused(skill)
 var image: Texture
 var target_color = Color(1.0, 0.0, 0.0)
 var _effects = []
+var _target_distance: TargetDistance
 
 
 func get_valid_targets(_level, _user) -> Array:
@@ -28,17 +29,28 @@ func get_effective_targets(level, target_characters: Array, user) -> Array:
 
 
 func preview():
+	if _target_distance != null:
+		_target_distance.preview()
 	for effect in _effects:
 		effect.preview()
 
 
 func reset():
+	if _target_distance != null:
+		_target_distance.reset()
 	for effect in _effects:
 		effect.reset()
 
 
-func cause():
-	for effect in _effects:
-		effect.reset()
-		effect.cause()
-	emit_signal("caused", self)
+func cause(animated: bool = true):
+	reset()
+	if animated:
+		_animate()
+	else:
+		for effect in _effects:
+			effect.cause()
+		emit_signal("caused", self)
+
+
+func _animate():
+	cause(false)

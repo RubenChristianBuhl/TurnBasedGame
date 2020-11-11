@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/LevelTileMarkBorderSouthWest.png-9886009b394d03ea4926866fb5672fbd.stex"
+path="res://.import/LevelTilePathToSouth.png-a304d3968853215f212e8d9caa835dbe.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/LevelTile/LevelTileMarkBorderSouthWest.png"
-dest_files=[ "res://.import/LevelTileMarkBorderSouthWest.png-9886009b394d03ea4926866fb5672fbd.stex" ]
+source_file="res://Sprites/LevelTile/LevelTilePathToSouth.png"
+dest_files=[ "res://.import/LevelTilePathToSouth.png-a304d3968853215f212e8d9caa835dbe.stex" ]
 
 [params]
 

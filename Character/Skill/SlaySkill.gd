@@ -2,7 +2,7 @@ class_name SlaySkill
 extends Skill
 
 
-var damage = 2
+var _damage = 2
 
 
 func _init():
@@ -14,4 +14,4 @@ func get_valid_targets(level, user) -> Array:
 
 
 func set_target_effects(level, target_tile: LevelTile, _user):
-	_effects = [DamageEffect.new(level, target_tile, damage)]
+	_effects = [DamageEffect.new(level, target_tile, _damage)]
