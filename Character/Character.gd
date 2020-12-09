@@ -1,43 +1,16 @@
 class_name Character
-extends Node2D
+extends Target
 
 
-signal died(character)
 signal turn_ended
 
 
-export var stats: Resource
-
-
-onready var tween = $Tween
-onready var health_bar = $HealthBar
-onready var health = stats.max_health setget _set_health, _get_health
+export(Resource) var stats
 
 
 var level
-var tile: LevelTile setget _set_tile, _get_tile
 var skills: Array setget, _get_skills
 var _move_skill = MoveSkill.new()
-
-
-func _set_health(new_health: int):
-	health = new_health
-	health_bar.current_value = health
-	if health <= 0:
-		emit_signal("died", self)
-
-
-func _get_health() -> int:
-	return health
-
-
-func _set_tile(new_tile: LevelTile):
-	tile = new_tile
-	position = tile.position
-
-
-func _get_tile() -> LevelTile:
-	return tile
 
 
 func _get_skills() -> Array:
@@ -47,11 +20,12 @@ func _get_skills() -> Array:
 	return character_skills
 
 
-func _on_skill_caused(skill: Skill):
-	if skill == _move_skill:
-		_use_skill()
-	else:
-		emit_signal("turn_ended")
+func is_passable(target) -> bool:
+	return not level.player_characters.has(target)
+
+
+func is_obstacle(_target) -> bool:
+	return true
 
 
 func start_turn():
@@ -59,40 +33,38 @@ func start_turn():
 
 
 func _move():
-	var move_targets = _move_skill.get_effective_targets(level, level.player_characters, self)
+	var move_tiles = _move_skill.get_effective_tiles(level, level.player_characters, self)
 	randomize()
-	move_targets.shuffle()
-	var move_target = tile if move_targets.empty() else move_targets.front()
-	_move_skill.set_target_effects(level, move_target, self)
-	_move_skill.cause()
+	move_tiles.shuffle()
+	var move_tile = tile if move_tiles.empty() else move_tiles.front()
+	_move_skill.set_tile_effects(level, move_tile, self)
+	var cause = _move_skill.cause()
+	if cause is GDScriptFunctionState and cause.is_valid():
+		yield(cause, "completed")
+	_use_skill()
 
 
 func _use_skill():
-	var skill_targets = []
+	var skill_tiles = []
 	for skill in self.skills:
-		for target in skill.get_effective_targets(level, level.player_characters, self):
-			skill_targets.append([skill, target])
+		for effective_tile in skill.get_effective_tiles(level, level.player_characters, self):
+			skill_tiles.append([skill, effective_tile])
 	randomize()
-	skill_targets.shuffle()
-	if not skill_targets.empty():
-		var selected_skill = skill_targets.front()[0]
-		var selected_target = skill_targets.front()[1]
-		selected_skill.set_target_effects(level, selected_target, self)
-		selected_skill.cause()
-	else:
-		emit_signal("turn_ended")
+	skill_tiles.shuffle()
+	if not skill_tiles.empty():
+		var selected_skill = skill_tiles.front()[0]
+		var selected_tile = skill_tiles.front()[1]
+		selected_skill.set_tile_effects(level, selected_tile, self)
+		var cause = selected_skill.cause()
+		if cause is GDScriptFunctionState and cause.is_valid():
+			yield(cause, "completed")
+	emit_signal("turn_ended")
 
 
 func _setup_health():
-	health_bar.max_value = stats.max_health
-	health_bar.current_value = health
-
-
-func _connect_skill_signals():
-	for skill in self.skills + [_move_skill]:
-		skill.connect("caused", self, "_on_skill_caused")
+	self.health_bar = $HealthBar
+	self.max_health = stats.max_health
 
 
 func _ready():
 	_setup_health()
-	_connect_skill_signals()

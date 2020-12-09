@@ -2,30 +2,30 @@ class_name MoveEffect
 extends Effect
 
 
-var _modulated_alpha = 0.5
-var _moving_character
-var _original_character
-var _original_tile: LevelTile
+var character
+var _modulate_alpha = 0.5
+var _character_duplicate
 
 
-func _init(level, target: LevelTile, character).(level, target):
-	_moving_character = character
+func _init(level, tile: LevelTile, character).(level, tile):
+	self.character = character
+	self.character.preview_tile = tile
 
 
 func preview():
-	_original_character = _moving_character.duplicate()
-	_original_tile = _moving_character.tile
-	_moving_character.tile = _target
-	_original_character.modulate.a = _modulated_alpha
-	_level.preview.add_child(_original_character)
-	_original_character.health_bar.visible = false
+	_character_duplicate = character.duplicate()
+	character.position = tile.position
+	_character_duplicate.modulate.a = _modulate_alpha
+	level.character_duplicates.add_child(_character_duplicate)
+	_character_duplicate.health_bar.visible = false
 
 
 func reset():
-	if _original_character != null:
-		_original_character.queue_free()
-		_moving_character.tile = _original_tile
+	if _character_duplicate != null:
+		_character_duplicate.queue_free()
+		character.position = character.tile.position
+		character.preview_tile = character.tile
 
 
 func cause():
-	_moving_character.tile = _target
+	character.tile = tile

@@ -1,4 +1,4 @@
-class_name TargetDistance
+class_name TileDistance
 extends Node
 
 

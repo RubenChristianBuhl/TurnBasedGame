@@ -9,10 +9,20 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Node2D",
+"base": "Skill",
+"class": "BombSkill",
+"language": "GDScript",
+"path": "res://Character/Skill/BombSkill.gd"
+}, {
+"base": "Target",
 "class": "Character",
 "language": "GDScript",
 "path": "res://Character/Character.gd"
+}, {
+"base": "HealthBar",
+"class": "CharacterHealthBar",
+"language": "GDScript",
+"path": "res://Character/HealthBar/CharacterHealthBar.gd"
 }, {
 "base": "Resource",
 "class": "CharacterStats",
@@ -39,6 +49,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Character/HealthBar/HealthBar.gd"
 }, {
+"base": "Target",
+"class": "Item",
+"language": "GDScript",
+"path": "res://Target/Item/Item.gd"
+}, {
 "base": "Node",
 "class": "Level",
 "language": "GDScript",
@@ -64,15 +79,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Character/Skill/MoveSkill.gd"
 }, {
-"base": "TargetDistance",
-"class": "PathTargetDistance",
+"base": "TileDistance",
+"class": "PathTileDistance",
 "language": "GDScript",
-"path": "res://Character/Skill/TargetDistance/PathTargetDistance.gd"
+"path": "res://Character/Skill/TileDistance/PathTileDistance.gd"
 }, {
 "base": "Character",
 "class": "PlayerCharacter",
 "language": "GDScript",
 "path": "res://Character/PlayerCharacter.gd"
+}, {
+"base": "Effect",
+"class": "PushEffect",
+"language": "GDScript",
+"path": "res://Character/Skill/Effect/PushEffect.gd"
 }, {
 "base": "Node",
 "class": "Skill",
@@ -89,29 +109,39 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Character/Skill/SlaySkill.gd"
 }, {
-"base": "Node",
-"class": "TargetDistance",
+"base": "Node2D",
+"class": "Target",
 "language": "GDScript",
-"path": "res://Character/Skill/TargetDistance/TargetDistance.gd"
+"path": "res://Target/Target.gd"
+}, {
+"base": "Node",
+"class": "TileDistance",
+"language": "GDScript",
+"path": "res://Character/Skill/TileDistance/TileDistance.gd"
 } ]
 _global_script_class_icons={
+"BombSkill": "",
 "Character": "",
+"CharacterHealthBar": "",
 "CharacterStats": "",
 "DamageEffect": "",
 "Effect": "",
 "Equipment": "",
 "HealthBar": "",
+"Item": "",
 "Level": "",
 "LevelInterface": "",
 "LevelTile": "",
 "MoveEffect": "",
 "MoveSkill": "",
-"PathTargetDistance": "",
+"PathTileDistance": "",
 "PlayerCharacter": "",
+"PushEffect": "",
 "Skill": "",
 "SkillButton": "",
 "SlaySkill": "",
-"TargetDistance": ""
+"Target": "",
+"TileDistance": ""
 }
 
 [application]
@@ -120,7 +150,7 @@ config/name="Game"
 
 [debug]
 
-gdscript/warnings/return_value_discarded=false
+gdscript/warnings/shadowed_variable=false
 
 [display]
 

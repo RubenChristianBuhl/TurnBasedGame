@@ -1,13 +1,13 @@
 class_name Effect
 
 
-var _level
-var _target: LevelTile
+var level
+var tile: LevelTile
 
 
-func _init(level, target: LevelTile):
-	_level = level
-	_target = target
+func _init(level, tile: LevelTile):
+	self.level = level
+	self.tile = tile
 
 
 func preview():
@@ -19,4 +19,8 @@ func reset():
 
 
 func cause():
+	pass
+
+
+func animate():
 	pass

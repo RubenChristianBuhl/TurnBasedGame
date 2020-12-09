@@ -6,13 +6,13 @@ signal current_character_changed(current_character)
 
 
 onready var tiles = $Tiles.get_children()
-onready var preview = $YSort/Preview
+onready var character_duplicates = $Characters/Duplicates
 
 
 var characters: Array setget, _get_characters
+var targets: Array setget, _get_targets
 var player_characters: Array setget, _get_player_characters
-var _next_character_index = 0
-var _current_character: Character
+var _current_character_index = -1
 var _astar = AStar2D.new()
 var _astar_ids = {}
 
@@ -52,26 +52,30 @@ func get_tile_path(from_tile: LevelTile, to_tile: LevelTile, disabled_path_tiles
 
 
 func get_tiles_in_range(from_tile: LevelTile, tile_range: int,
-		disabled_path_tiles: Array = [], disabled_target_tiles: Array = []) -> Array:
+		disabled_path_tiles: Array = [], disabled_end_tiles: Array = []) -> Array:
 	var tiles_in_range = []
 	for tile in tiles:
-		if not disabled_target_tiles.has(tile):
+		if not disabled_end_tiles.has(tile):
 			var id_path = _get_id_path(from_tile, tile, disabled_path_tiles)
 			if not id_path.empty() and id_path.size() - 1 <= tile_range and tile != from_tile:
 				tiles_in_range.append(tile)
 	return tiles_in_range
 
 
-func get_tiles_in_direction(from_tile: LevelTile, direction: int, border_tiles: Array = []) -> Array:
-	var tile_in_direction = from_tile.neighbors.get(direction)
-	if from_tile.neighbors.has(direction) and not border_tiles.has(tile_in_direction):
-		return [tile_in_direction] + get_tiles_in_direction(tile_in_direction, direction, border_tiles)
+func get_tiles_in_direction(from_tile: LevelTile, direction: int) -> Array:
+	if from_tile.neighbors.has(direction):
+		var tile_in_direction = from_tile.neighbors[direction]
+		return [tile_in_direction] + get_tiles_in_direction(tile_in_direction, direction)
 	else:
 		return []
 
 
 func _get_characters() -> Array:
-	return $YSort/Characters.get_children()
+	return $Characters/Originals.get_children()
+
+
+func _get_targets() -> Array:
+	return self.characters + $Items.get_children()
 
 
 func _get_player_characters() -> Array:
@@ -82,35 +86,23 @@ func _get_player_characters() -> Array:
 	return player
 
 
-func get_enemy_characters(allied_character: Character) -> Array:
-	var enemy_characters = []
-	for character in self.characters:
-		if character is PlayerCharacter != allied_character is PlayerCharacter:
-			enemy_characters.append(character)
-	return enemy_characters
-
-
 func _setup_characters():
 	for character in self.characters:
 		character.level = self
-		character.connect("died", self, "_on_character_died")
+		character.connect("collapsed", self, "_on_character_collapsed")
 		character.connect("turn_ended", self, "_on_turn_ended")
-		character.tween.connect("tween_started", $Interface, "_on_tween_started")
-		character.tween.connect("tween_completed", $Interface, "_on_tween_completed")
-		for tile in tiles:
-			if tile.position == character.position:
-				character.tile = tile
 
 
-func get_character_at_tile(tile: LevelTile) -> Character:
-	for character in self.characters:
-		if character.tile == tile:
-			return character
-	return null
+func get_targets_at_tile(tile: LevelTile) -> Array:
+	var targets_at_tile = []
+	for target in self.targets:
+		if target.preview_tile == tile:
+			targets_at_tile.append(target)
+	return targets_at_tile
 
 
-func _on_character_died(character: Character):
-	$YSort/Characters.remove_child(character)
+func _on_character_collapsed(character: Character):
+	$Characters/Originals.remove_child(character)
 	character.queue_free()
 
 
@@ -133,14 +125,14 @@ func _are_all_enemies_dead() -> bool:
 
 func mark_tiles(mark: Array, color: Color):
 	for tile in mark:
-		tile.mark(color)
+		tile.mark(color, true)
 	for tile in mark:
-		tile.update_border_visibility()
+		tile.update_group_border()
 
 
 func unmark_tiles():
 	for tile in tiles:
-		tile.unmark()
+		tile.unmark(true)
 
 
 func _setup_tiles():
@@ -148,6 +140,9 @@ func _setup_tiles():
 		tile.level = self
 		tile.setup_neighbors()
 		tile.connect("input_event", $Interface, "_on_tile_input_event")
+		for target in self.targets:
+			if tile.position == target.position:
+				target.tile = tile
 
 
 func _ready():
@@ -158,7 +153,6 @@ func _ready():
 
 
 func _start_next_turn():
-	_current_character = self.characters[_next_character_index]
-	_next_character_index = (_next_character_index + 1) % self.characters.size()
-	emit_signal("current_character_changed", _current_character)
-	_current_character.start_turn()
+	_current_character_index = (_current_character_index + 1) % self.characters.size()
+	emit_signal("current_character_changed", self.characters[_current_character_index])
+	self.characters[_current_character_index].start_turn()

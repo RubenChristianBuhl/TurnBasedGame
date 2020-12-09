@@ -2,25 +2,29 @@ class_name DamageEffect
 extends Effect
 
 
-var _damage_amount: int
-var _targeted_tile: LevelTile
-var _targeted_character
+var damage: int
+var targets: Array
 
 
-func _init(level, target: LevelTile, amount: int).(level, target):
-	_damage_amount = amount
-	_targeted_tile = target
-	_targeted_character = level.get_character_at_tile(target)
+func _init(level, tile: LevelTile, damage: int).(level, tile):
+	self.damage = damage
+	self.targets = level.get_targets_at_tile(tile)
+	for target in targets:
+		target.preview_health -= damage
 
 
 func preview():
-	_targeted_tile.damage_label.text = str(_damage_amount)
+	tile.damage_label.text = str(damage)
+	for target in targets:
+		target.show_preview_health()
 
 
 func reset():
-	_targeted_tile.damage_label.text = ""
+	tile.damage_label.text = ""
+	for target in targets:
+		target.hide_preview_health()
 
 
 func cause():
-	if _targeted_character != null:
-		_targeted_character.health -= _damage_amount
+	for target in targets:
+		target.health -= damage

@@ -15,27 +15,30 @@ func select_skill(skill: Skill):
 			_selected_skill.reset()
 		_selected_skill = skill
 		if skill != null:
-			level.mark_tiles(skill.get_valid_targets(level, self), skill.target_color)
+			level.mark_tiles(skill.get_valid_tiles(level, self), skill.tile_color)
 
 
-func select_target(target: LevelTile, is_accepted: bool):
+func select_tile(selected_tile: LevelTile, is_accepted: bool):
 	if _selected_skill != null:
 		_selected_skill.reset()
-		if target != null and _selected_skill.get_valid_targets(level, self).has(target):
-			_selected_skill.set_target_effects(level, target, self)
+		if selected_tile != null and _selected_skill.get_valid_tiles(level, self).has(selected_tile):
+			_selected_skill.set_tile_effects(level, selected_tile, self)
 			if is_accepted:
 				level.unmark_tiles()
-				_selected_skill.cause(_selected_skill != _move_skill)
+				var cause = _selected_skill.cause(_selected_skill != _move_skill)
+				if cause is GDScriptFunctionState and cause.is_valid():
+					yield(cause, "completed")
+				if _selected_skill == _move_skill:
+					_moved = true
+					select_skill(null)
+				else:
+					emit_signal("turn_ended")
 			else:
 				_selected_skill.preview()
 
 
-func _on_skill_caused(skill: Skill):
-	if skill == _move_skill:
-		_moved = true
-		select_skill(null)
-	else:
-		emit_signal("turn_ended")
+func is_passable(character) -> bool:
+	return level.player_characters.has(character)
 
 
 func start_turn():

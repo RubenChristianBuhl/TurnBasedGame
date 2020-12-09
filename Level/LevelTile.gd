@@ -44,24 +44,26 @@ func setup_neighbors():
 			other_tile.neighbors[EAST] = self
 
 
-func mark(color: Color):
-	$Mark.modulate = color
-	$Mark.visible = true
+func mark(color: Color, group: bool = false):
+	var mark = $Mark/Group if group else $Mark/Single
+	mark.modulate = color
+	mark.visible = true
 
 
-func unmark():
-	$Mark.visible = false
+func unmark(group: bool = false):
+	var mark = $Mark/Group if group else $Mark/Single
+	mark.visible = false
 
 
 func is_marked() -> bool:
-	return $Mark.visible
+	return $Mark/Group.visible or $Mark/Single.visible
 
 
-func update_border_visibility():
-	$Mark/BorderNorth.visible = neighbors.has(NORTH) and not neighbors[NORTH].is_marked()
-	$Mark/BorderEast.visible = neighbors.has(EAST) and not neighbors[EAST].is_marked()
-	$Mark/BorderSouth.visible = neighbors.has(SOUTH) and not neighbors[SOUTH].is_marked()
-	$Mark/BorderWest.visible = neighbors.has(WEST) and not neighbors[WEST].is_marked()
+func update_group_border():
+	$Mark/Group/BorderNorth.visible = neighbors.has(NORTH) and not neighbors[NORTH].is_marked()
+	$Mark/Group/BorderEast.visible = neighbors.has(EAST) and not neighbors[EAST].is_marked()
+	$Mark/Group/BorderSouth.visible = neighbors.has(SOUTH) and not neighbors[SOUTH].is_marked()
+	$Mark/Group/BorderWest.visible = neighbors.has(WEST) and not neighbors[WEST].is_marked()
 
 
 func show_path(previous_tile: LevelTile, next_tile: LevelTile, color: Color):
@@ -84,6 +86,31 @@ func show_path(previous_tile: LevelTile, next_tile: LevelTile, color: Color):
 func hide_path():
 	for path in $Path.get_children():
 		path.visible = false
+
+
+func show_arrow(direction: int, color: Color, small: bool = false):
+	var arrows = {
+		NORTH: $Arrow/NorthSmall if small else $Arrow/North,
+		EAST: $Arrow/EastSmall if small else $Arrow/East,
+		SOUTH: $Arrow/SouthSmall if small else $Arrow/South,
+		WEST: $Arrow/WestSmall if small else $Arrow/West
+	}
+	$Arrow.modulate = color
+	arrows[direction].visible = true
+
+
+func hide_arrow():
+	for arrow in $Arrow.get_children():
+		arrow.visible = false
+
+
+func show_collision(color: Color):
+	$Collision.modulate = color
+	$Collision.visible = true
+
+
+func hide_collision():
+	$Collision.visible = false
 
 
 func _on_input_event(_viewport, event, _shape_idx):

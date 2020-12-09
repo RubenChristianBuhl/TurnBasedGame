@@ -1,5 +1,5 @@
-class_name PathTargetDistance
-extends TargetDistance
+class_name PathTileDistance
+extends TileDistance
 
 
 var _path: Array
